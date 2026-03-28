@@ -1,0 +1,57 @@
+
+
+    //Point randomPoint() {
+    //    vector<Point> availablePoints;
+    //    // 遍历整个网格，找到空闲点
+    //    for (int x = 0; x < WIDTH / GRID_SIZE; ++x) {
+    //        for (int y = 0; y < HEIGHT / GRID_SIZE; ++y) {
+    //            Point p(x * GRID_SIZE, y * GRID_SIZE);
+    //            bool occupied = false; // 判断该点是否被占用
+    //            if (snake && snake->isCollision(p)) occupied = true;
+    //            if (find(food.begin(), food.end(), p) != food.end()) occupied = true;
+    //            if (find(obstacles.begin(), obstacles.end(), p) != obstacles.end()) occupied = true;
+    //            if (!occupied) availablePoints.push_back(p);
+    //        }
+    //    }
+    //    if (availablePoints.empty()) {
+    //        return Point(-1, -1);  // 返回无效点
+    //    }
+    //    // 随机选择一个空闲点
+    //    return availablePoints[rand() % availablePoints.size()];
+    //}
+
+
+
+        for (auto it = food.begin(); it != food.end(); ++it) {
+            if (head == it->getPosition()) {
+                score += it->getScore();
+                snake->grow();
+                it = food.erase(it);
+                break;
+            }
+        }
+
+
+auto it = find(food.begin(), food.end(), nextHead);
+if (it != food.end()) {
+    food.erase(it);        // 移除食物
+    snake->grow();         // 蛇增长
+    spawnFood();           // 生成新食物
+}
+
+auto it = find(food.begin(), food.end(), nextHead);
+assert(it != food.end() && "Logic error: no food found at the expected position");
+food.erase(it);        // 移除食物
+snake->grow();         // 蛇增长
+spawnFood();           // 生成新食物
+
+
+
+    void generateFood() {
+        Point foodPos = randomPoint();
+        if (foodPos.x != -1 && foodPos.y != -1) {
+            int randValue = rand() % 10;
+            FoodType type = randValue < 7 ? NORMAL : (randValue < 9 ? BONUS : PRIME);
+            food.push_back(Food(foodPos, type));
+        }
+    }	
